@@ -10,7 +10,8 @@ from flask import jsonify, abort, request, make_response
 from api.v1.views import app_views
 
 
-@app_views.route('/states/<state_id>/cities', methods=['GET'])
+@app_views.route('/states/<state_id>/cities', strict_slashes=False,
+                 methods=['GET'])
 def cities_get(state_id):
     """
     Get method for all cities linked to a state
@@ -25,7 +26,8 @@ def cities_get(state_id):
     abort(404)
 
 
-@app_views.route('/cities/<city_id>', methods=['GET'])
+@app_views.route('/cities/<city_id>', strict_slashes=False,
+                 methods=['GET'])
 def city_get(city_id):
     """
     Get a city using its id
@@ -35,7 +37,8 @@ def city_get(city_id):
         return jsonify(city.to_dict())
     abort(404)
 
-@app_views.route('/cities/<city_id>', methods=['PUT'])
+@app_views.route('/cities/<city_id>', strict_slashes=False,
+                 methods=['PUT'])
 def state_update(city_id):
     """
     Update a state object in the database
@@ -57,7 +60,8 @@ def state_update(city_id):
     abort(404)
 
 
-@app_views.route('/cities/<city_id>', methods=['DELETE'])
+@app_views.route('/cities/<city_id>', strict_slashes=False,
+                 methods=['DELETE'])
 def city_delete(city_id):
     """
     Delete a city object
@@ -70,7 +74,8 @@ def city_delete(city_id):
     else:
         abort(404)
 
-@app_views.route('/states/<state_id>/cities', methods=['POST'])
+@app_views.route('/states/<state_id>/cities', strict_slashes=False,
+                 methods=['POST'])
 def city_create(state_id):
     """
     Create a new city object

@@ -6,7 +6,7 @@ Handles all API actions for state objects
 from models import storage
 from models.amenity import Amenity
 from models.place import Place
-from api.v1.views import amenity_view
+from api.v1.views import place_amenity_view
 from flask import jsonify, abort, request, make_response
 
 @place_amenity_view.route('/places/<place_id>/amenities', strict_slashes=False)
@@ -41,7 +41,7 @@ def amenity_get(place_id, amenity_id):
         return jsonify(new_list)
     abort(404)
 
-@amenity_view.route('/places/<place_id>/amenities/<amenity_id>',
+@place_amenity_view.route('/places/<place_id>/amenities/<amenity_id>',
                     strict_slashes=False, methods=['DELETE'])
 def amenity_delete(place_id, amenity_id):
     """
@@ -71,7 +71,7 @@ def amenity_delete(place_id, amenity_id):
         abort(404)
     abort(404)
 
-@amenity_view.route('/places/<place_id>/amenities/amenity_id', strict_slashes=False,
+@place_amenity_view.route('/places/<place_id>/amenities/amenity_id', strict_slashes=False,
                   methods=['POST'])
 def amenity_create(amenity_id):
     """
@@ -96,59 +96,3 @@ def amenity_create(amenity_id):
             return make_response(jsonify(from_db.to_dict()), 201)
         abort(400)
     abort(404)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

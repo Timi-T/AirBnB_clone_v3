@@ -13,7 +13,7 @@ amenity_view = Blueprint('amenity_view', __name__, url_prefix='/api/v1')
 user_view = Blueprint('user_view', __name__, url_prefix='/api/v1')
 place_view = Blueprint('place_view', __name__, url_prefix='/api/v1')
 review_view = Blueprint('review_view', __name__, url_prefix='/api/v1')
-amenity_view = Blueprint('place_amenity_view', __name__, url_prefix='/api/v1')
+place_amenity_view = Blueprint('place_amenity_view', __name__, url_prefix='/api/v1')
 
 from api.v1.views.index import *
 from api.v1.views.states import *

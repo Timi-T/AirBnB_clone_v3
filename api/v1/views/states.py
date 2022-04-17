@@ -8,6 +8,7 @@ from models.state import State
 from api.v1.views import state_view
 from flask import jsonify, abort, request, make_response
 
+
 @state_view.route('/states/<state_id>', strict_slashes=False)
 @state_view.route('/states', strict_slashes=False)
 def state_get(state_id=None):
@@ -29,8 +30,9 @@ def state_get(state_id=None):
         new_list.append(state.to_dict())
     return jsonify(new_list)
 
+
 @state_view.route('/states/<state_id>', strict_slashes=False,
-                   methods=['PUT'])
+                  methods=['PUT'])
 def state_update(state_id):
     """
     Update a state object in the database
@@ -52,6 +54,7 @@ def state_update(state_id):
         abort(400, "Not a JSON")
     abort(404)
 
+
 @state_view.route('/states/<state_id>', strict_slashes=False,
                   methods=['DELETE'])
 def state_delete(state_id):
@@ -66,6 +69,7 @@ def state_delete(state_id):
         return make_response(jsonify({}), 200)
     else:
         abort(404)
+
 
 @state_view.route('/states', strict_slashes=False,
                   methods=['POST'])
@@ -83,60 +87,3 @@ def state_create():
         from_db = storage.get(State, new_state.id)
         return make_response(jsonify(from_db.to_dict()), 201)
     abort(400)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

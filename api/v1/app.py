@@ -54,14 +54,7 @@ def not_found(error):
 @app.errorhandler(400)
 def bad_request(error):
     """handle error for unsupported data format"""
-    if (error):
-        return make_response(error, 400)
-
-
-@app.errorhandler(400)
-def bad_request(error):
-    """handle error for unsupported data format"""
-    return make_response("Not a JSON", 400)
+    return make_response(error, 400)
 
 
 if __name__ == "__main__":

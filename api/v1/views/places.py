@@ -7,11 +7,11 @@ from models import storage
 from models.place import Place
 from models.state import City
 from models.user import User
-from api.v1.views import place_view
+from api.v1.views import app_views
 from flask import jsonify, abort, request, make_response
 
 
-@place_view.route('/cities/<city_id>/places', strict_slashes=False)
+@app_views.route('/cities/<city_id>/places', strict_slashes=False)
 def places_get(city_id):
     """
     Get method for all places linked to a state
@@ -27,7 +27,7 @@ def places_get(city_id):
     abort(404)
 
 
-@place_view.route('/places/<place_id>', strict_slashes=False)
+@app_views.route('/places/<place_id>', strict_slashes=False)
 def place_get(place_id):
     """
     Get a place using its id
@@ -39,7 +39,7 @@ def place_get(place_id):
     abort(404)
 
 
-@place_view.route('/places/<place_id>', strict_slashes=False,
+@app_views.route('/places/<place_id>', strict_slashes=False,
                   methods=['PUT'])
 def state_update(place_id):
     """
@@ -64,7 +64,7 @@ def state_update(place_id):
     abort(404)
 
 
-@place_view.route('/places/<place_id>', strict_slashes=False,
+@app_views.route('/places/<place_id>', strict_slashes=False,
                   methods=['DELETE'])
 def place_delete(place_id):
     """
@@ -80,7 +80,7 @@ def place_delete(place_id):
         abort(404)
 
 
-@place_view.route('/cities/<city_id>/places', strict_slashes=False,
+@app_views.route('/cities/<city_id>/places', strict_slashes=False,
                   methods=['POST'])
 def place_create(city_id):
     """

@@ -9,6 +9,7 @@ from models.state import State
 from api.v1.views import city_view
 from flask import jsonify, abort, request, make_response
 
+
 @city_view.route('/states/<state_id>/cities', strict_slashes=False)
 def cities_get(state_id):
     """
@@ -24,6 +25,7 @@ def cities_get(state_id):
         return jsonify(new_list)
     abort(404)
 
+
 @city_view.route('/cities/<city_id>', strict_slashes=False)
 def city_get(city_id):
     """
@@ -35,8 +37,9 @@ def city_get(city_id):
         return jsonify(city.to_dict())
     abort(404)
 
+
 @city_view.route('/cities/<city_id>', strict_slashes=False,
-                   methods=['PUT'])
+                 methods=['PUT'])
 def state_update(city_id):
     """
     Update a state object in the database
@@ -58,8 +61,9 @@ def state_update(city_id):
         abort(400, "Not a JSON")
     abort(404)
 
+
 @city_view.route('/cities/<city_id>', strict_slashes=False,
-                  methods=['DELETE'])
+                 methods=['DELETE'])
 def city_delete(city_id):
     """
     Delete a city object
@@ -73,8 +77,9 @@ def city_delete(city_id):
     else:
         abort(404)
 
+
 @city_view.route('/states/<state_id>/cities', strict_slashes=False,
-                  methods=['POST'])
+                 methods=['POST'])
 def city_create(state_id):
     """
     Create a new city object
@@ -93,59 +98,3 @@ def city_create(state_id):
             return make_response(jsonify(from_db.to_dict()), 201)
         abort(400)
     abort(404)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

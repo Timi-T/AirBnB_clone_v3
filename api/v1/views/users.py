@@ -8,6 +8,7 @@ from models.user import User
 from api.v1.views import user_view
 from flask import jsonify, abort, request, make_response
 
+
 @user_view.route('/users/<user_id>', strict_slashes=False)
 @user_view.route('/users', strict_slashes=False)
 def user_get(user_id=None):
@@ -25,12 +26,13 @@ def user_get(user_id=None):
             abort(404)
     all_users = storage.all(User)
     new_list = []
-    for key,user in all_users.items():
+    for key, user in all_users.items():
         new_list.append(user.to_dict())
     return jsonify(new_list)
 
+
 @user_view.route('/users/<user_id>', strict_slashes=False,
-                   methods=['PUT'])
+                 methods=['PUT'])
 def user_update(user_id):
     """
     Update a user object in the database
@@ -43,7 +45,7 @@ def user_update(user_id):
             user_dict = user.to_dict()
             for k, v in data.items():
                 if (k != 'id' and k != 'created_at' and k != 'updated_at'
-                    and k!= 'email'):
+                        and k != 'email'):
                     user_dict[k] = v
             user.delete()
             updated_user = User(**user_dict)
@@ -53,8 +55,9 @@ def user_update(user_id):
         abort(400, "Not a JSON")
     abort(404)
 
+
 @user_view.route('/users/<user_id>', strict_slashes=False,
-                  methods=['DELETE'])
+                 methods=['DELETE'])
 def user_delete(user_id):
     """
     Delete an user object
@@ -68,8 +71,9 @@ def user_delete(user_id):
     else:
         abort(404)
 
+
 @user_view.route('/users', strict_slashes=False,
-                  methods=['POST'])
+                 methods=['POST'])
 def user_create():
     """
     Create a new user object
@@ -86,60 +90,3 @@ def user_create():
         from_db = storage.get(User, new_user.id)
         return make_response(jsonify(from_db.to_dict()), 201)
     abort(400)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

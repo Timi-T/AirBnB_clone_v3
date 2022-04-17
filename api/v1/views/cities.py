@@ -15,8 +15,10 @@ def find_cities(state_id):
     for city in storage.all(City).values():
         if state_id == city.state_id:
             city_list.append(city.to_dict())
+        else:
+            continue
     for state in storage.all(State).values():
-        states_id.append(state)
+        states_id.append(state.id)
     if state_id not in states_id:
         abort(404)
     return jsonify(city_list)
@@ -39,7 +41,7 @@ def delete_city(city_id):
     """This function will delete a city based on its ID"""
     city_list = []
     for city in storage.all(City).values():
-        city_list.append(city)
+        city_list.append(city.id)
         if city.id == city_id:
             storage.delete(city)
             storage.save()
@@ -60,11 +62,13 @@ def create_city(state_id):
             if state.id == state_id:
                 city = City()
                 if 'name' in json:
-                    for key, value in json.items():
-                        setattr(city, key, value)
+                    city.name = json['name']
                 else:
                     return make_response(jsonify({'error': 'Missing name'}),
                                          400)
+                city.state_id = state.id
+                for key, value in json.items():
+                    setattr(city, key, value)
                 city.save()
                 return city.to_dict(), 201
         if state_id not in state_list:

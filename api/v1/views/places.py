@@ -69,6 +69,8 @@ def create_place(city_id):
             if 'name' not in json:
                 return make_response(jsonify({'error': 'Missing name'}), 400)
             place = Place()
+            place.name = json['name']
+            place.user_id = json['user_id']
             for key, value in json.items():
                 setattr(place, key, value)
             place.save()

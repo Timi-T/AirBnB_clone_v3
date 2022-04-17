@@ -40,31 +40,25 @@ def delete_city(city_id):
     else:
         abort(404)
 
+
 @app_views.route('/states/<state_id>/cities', methods=['POST'])
 def create_city(state_id):
     """This function will create a city"""
-    content_header = request.headers.get('Content-Type')
-    if (content_header == 'application/json'):
-        state_list = []
-        json = request.get_json()
-        for state in storage.all(State).values():
-            state_list.append(state.id)
-            if state.id == state_id:
-                city = City()
-                if 'name' in json:
-                    city.name = json['name']
-                else:
-                    return make_response(jsonify({'error': 'Missing name'}),
-                                         400)
-                city.state_id = state.id
-                for key, value in json.items():
-                    setattr(city, key, value)
-                city.save()
-                return city.to_dict(), 201
-        if state_id not in state_list:
-            abort(404)
+    state = storage.get(State, state_id)
+    if (state):
+        data = request.get_json()
+        if not (data.get('name')):
+            return make_response(jsonify({'error': 'Missing name'}), 400)
+        if (request.headers.get('Content-Type') == 'application/json'):
+            data['state_id'] = state_id
+            new_city = City(**data)
+            new_city.save()
+            from_db = storage.get(City, new_city.id)
+            return make_response(jsonify(from_db.to_dict()), 201)
+        else:
+            return make_response(jsonify({'error': 'Not a JSON'}), 400)
     else:
-        return make_response(jsonify({'error': 'Not a JSON'}), 400)
+        abort(404)
 
 
 @app_views.route('/cities/<city_id>', methods=['PUT'])

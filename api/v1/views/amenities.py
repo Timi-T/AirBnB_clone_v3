@@ -8,6 +8,7 @@ from models.amenity import Amenity
 from api.v1.views import amenity_view
 from flask import jsonify, abort, request, make_response
 
+
 @amenity_view.route('/amenities/<amenity_id>', strict_slashes=False)
 @amenity_view.route('/amenities', strict_slashes=False)
 def amenity_get(amenity_id=None):
@@ -25,12 +26,13 @@ def amenity_get(amenity_id=None):
             abort(404)
     all_amenities = storage.all(Amenity)
     new_list = []
-    for key,amenity in all_amenities.items():
+    for key, amenity in all_amenities.items():
         new_list.append(amenity.to_dict())
     return jsonify(new_list)
 
+
 @amenity_view.route('/amenities/<amenity_id>', strict_slashes=False,
-                   methods=['PUT'])
+                    methods=['PUT'])
 def amenity_update(amenity_id):
     """
     Update a amenity object in the database
@@ -52,8 +54,9 @@ def amenity_update(amenity_id):
         abort(400, "Not a JSON")
     abort(404)
 
+
 @amenity_view.route('/amenities/<amenity_id>', strict_slashes=False,
-                  methods=['DELETE'])
+                    methods=['DELETE'])
 def amenity_delete(amenity_id):
     """
     Delete an amenity object
@@ -67,8 +70,9 @@ def amenity_delete(amenity_id):
     else:
         abort(404)
 
+
 @amenity_view.route('/amenities', strict_slashes=False,
-                  methods=['POST'])
+                    methods=['POST'])
 def amenity_create():
     """
     Create a new amenity object
@@ -83,60 +87,3 @@ def amenity_create():
         from_db = storage.get(Amenity, new_amenity.id)
         return make_response(jsonify(from_db.to_dict()), 201)
     abort(400)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

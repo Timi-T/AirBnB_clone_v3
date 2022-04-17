@@ -2,12 +2,11 @@
 """
 Handles all API actions for state objects
 """
-
+from api.v1.views import app_views
+from flask import jsonify, abort, request, make_response
 from models import storage
 from models.city import City
 from models.state import State
-from flask import jsonify, abort, request, make_response
-from api.v1.views import app_views
 
 
 @app_views.route('/states/<state_id>/cities', strict_slashes=False,
@@ -19,11 +18,9 @@ def cities_get(state_id):
     state = storage.get(State, state_id)
     if (state):
         new_list = []
-        for city in storage.all(City).items():
-            if state.id == city.state_id:
-                new_list.append(city.to_dict())
-            else:
-                continue
+        cities = state.cities:
+        for city in cities:
+            new_list.append(city.to_dict())
         return jsonify(new_list)
     else:
         abort(404)

@@ -38,15 +38,18 @@ app.register_blueprint(review_view)
 app.register_blueprint(place_amenity_view)
 CORS(app, resources={r"/*": {"origins": "0.0.0.0"}})
 
+
 @app.teardown_appcontext
 def close_session(response_or_exc):
     """close current session"""
     storage.close()
 
+
 @app.errorhandler(404)
 def not_found(error):
     """handle 404 (not found errors)"""
     return make_response(jsonify({'error': 'Not found'}), 404)
+
 
 @app.errorhandler(400)
 def bad_request(error):
@@ -54,10 +57,12 @@ def bad_request(error):
     if (error):
         return make_response(error, 400)
 
+
 @app.errorhandler(400)
 def bad_request(error):
     """handle error for unsupported data format"""
     return make_response("Not a JSON", 400)
+
 
 if __name__ == "__main__":
     app.run(host=host_address, port=port_number, threaded=True)

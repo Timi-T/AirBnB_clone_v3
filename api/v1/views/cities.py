@@ -10,7 +10,8 @@ from flask import jsonify, abort, request, make_response
 from api.v1.views import app_views
 
 
-@app_views.route('/states/<state_id>/cities',  strict_slashes=False)
+@app_views.route('/states/<state_id>/cities',  strict_slashes=False,
+                 methods=['GET'])
 def cities_get(state_id):
     """
     Get method for all cities linked to a state
@@ -25,7 +26,8 @@ def cities_get(state_id):
     abort(404)
 
 
-@app_views.route('/cities/<city_id>', strict_slashes=False)
+@app_views.route('/cities/<city_id>', strict_slashes=False,
+                 methods=['GET'])
 def city_get(city_id):
     """
     Get a city using its id

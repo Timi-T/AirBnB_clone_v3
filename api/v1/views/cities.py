@@ -23,7 +23,8 @@ def cities_get(state_id):
         for city in cities:
             new_list.append(city.to_dict())
         return jsonify(new_list)
-    abort(404)
+    else:
+        abort(404)
 
 
 @app_views.route('/cities/<city_id>', strict_slashes=False,
@@ -35,7 +36,8 @@ def city_get(city_id):
     city = storage.get(City, city_id)
     if (city):
         return jsonify(city.to_dict())
-    abort(404)
+    else:
+        abort(404)
 
 @app_views.route('/cities/<city_id>', strict_slashes=False,
                  methods=['PUT'])
@@ -57,8 +59,10 @@ def state_update(city_id):
             updated_city.save()
             ret = storage.get(City, city_id)
             return make_response(ret.to_dict(), 200)
-        abort(400, "Not a JSON")
-    abort(404)
+        else:
+            return make_response(jsonify({'error': 'Not a JSON'}), 400)
+    else:
+        abort(404)
 
 
 @app_views.route('/cities/<city_id>', strict_slashes=False,
@@ -85,12 +89,14 @@ def city_create(state_id):
     if (state):
         data = request.get_json()
         if not (data.get('name')):
-            abort(400, "Missing name")
+            return make_response(jsonify({'error': 'Missing name'}), 400)
         if (request.headers.get('Content-Type') == 'application/json'):
             data['state_id'] = state_id
             new_city = City(**data)
             new_city.save()
             from_db = storage.get(City, new_city.id)
             return make_response(jsonify(from_db.to_dict()), 201)
-        abort(400, "Not a JSON")
-    abort(404)
+        else:
+            return make_response(jsonify({'error': 'Not a JSON'}), 400)
+    else:
+        abort(404)

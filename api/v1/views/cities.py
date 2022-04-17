@@ -23,14 +23,10 @@ def find_cities(state_id):
 @app_views.route('/cities/<city_id>', methods=['GET'])
 def find_city(city_id):
     """This function will find the city of given ID"""
-    city_list = []
-    for city in storage.all(City).values():
-        city_list.append(city.id)
-        if city_id == city.id:
-            return city.to_dict()
-    if city_id not in city_list:
-        abort(404)
-
+    city = storage.get(City, city_id)
+    if (city):
+        return jsonify(city.to_dict())
+    abort(404)
 
 @app_views.route('/cities/<city_id>', methods=['DELETE'])
 def delete_city(city_id):

@@ -77,10 +77,14 @@ class DBStorage:
 
     def get(self, cls, id):
         """This function will get the object of specific ID"""
+        id_list = []
         clas = self.all(cls)
         for value in clas.values():
+            id_list.append(value.id)
             if (value.id == id):
                 return value
+        if id not in id_list:
+            return None
 
     def count(self, cls=None):
         """This function will count the number of object in class"""

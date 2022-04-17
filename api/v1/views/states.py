@@ -6,7 +6,7 @@ from models import storage
 from models.state import State
 
 
-@app_views.route('/states/', methods=['GET'])
+@app_views.route('/states', methods=['GET'])
 def find_states():
     """This is the function that will list all states"""
     state_list = []

@@ -7,11 +7,11 @@ from models import storage
 from models.place import Place
 from models.state import City
 from models.user import User
-from api.v1.views import place_view
+from api.v1.views import app_views
 from flask import jsonify, abort, request, make_response
 
 
-@place_view.route('/cities/<city_id>/places', strict_slashes=False)
+@app_views.route('/cities/<city_id>/places', methods=['GET'])
 def places_get(city_id):
     """
     Get method for all places linked to a state
@@ -27,7 +27,7 @@ def places_get(city_id):
     abort(404)
 
 
-@place_view.route('/places/<place_id>', strict_slashes=False)
+@app_views.route('/places/<place_id>', methods=['GET'])
 def place_get(place_id):
     """
     Get a place using its id
@@ -39,8 +39,7 @@ def place_get(place_id):
     abort(404)
 
 
-@place_view.route('/places/<place_id>', strict_slashes=False,
-                  methods=['PUT'])
+@app_views.route('/places/<place_id>', methods=['PUT'])
 def state_update(place_id):
     """
     Update a state object in the database
@@ -60,12 +59,11 @@ def state_update(place_id):
             updated_place.save()
             ret = storage.get(Place, place_id)
             return make_response(ret.to_dict(), 200)
-        abort(400, "Not a JSON")
+        return make_response(jsonify({'error': 'Not a JSON'}), 400)
     abort(404)
 
 
-@place_view.route('/places/<place_id>', strict_slashes=False,
-                  methods=['DELETE'])
+@app_views.route('/places/<place_id>', methods=['DELETE'])
 def place_delete(place_id):
     """
     Delete a place object
@@ -80,8 +78,7 @@ def place_delete(place_id):
         abort(404)
 
 
-@place_view.route('/cities/<city_id>/places', strict_slashes=False,
-                  methods=['POST'])
+@app_views.route('/cities/<city_id>/places', methods=['POST'])
 def place_create(city_id):
     """
     Create a new place object
@@ -92,9 +89,10 @@ def place_create(city_id):
         if (city):
             data = request.get_json()
             if not (data.get('name')):
-                abort(400, "Missing name")
+                return make_response(jsonify({'error': 'Missing name'}), 400)
             if not (data.get('user_id')):
-                abort(400, "Missing user_id")
+                return make_response(jsonify({'error': 'Missing user_id'}),
+                                     400)
             user = storage.get(User, data.get('user_id'))
             if not (user):
                 abort(404)
@@ -104,4 +102,4 @@ def place_create(city_id):
             from_db = storage.get(Place, new_place.id)
             return make_response(jsonify(from_db.to_dict()), 201)
         abort(404)
-    abort(400, "Not a JSON")
+    return make_response(jsonify({'error': 'Not a JSON'}), 400)

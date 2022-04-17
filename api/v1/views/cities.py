@@ -44,18 +44,14 @@ def state_update(city_id):
     if (city):
         data = request.get_json()
         if (request.headers.get('Content-Type') == 'application/json'):
-            city_dict = city.to_dict()
             for k, v in data.items():
                 if (k != 'id' and k != 'created_at' and k != 'updated_at'):
-                    city_dict[k] = v
-                    city.delete()
-                    updated_city = City(**city_dict)
-                    updated_city.save()
-                    ret = storage.get(City, city_id)
-                    return make_response(ret.to_dict(), 200)
+                    setattr(city, k, v)
+                    return city.to_dict(), 200
         else:
             return make_response(jsonify({'error': 'Not a JSON'}), 400)
-    abort(404)
+    else:
+        abort(404)
 
 
 @app_views.route('/cities/<city_id>', methods=['DELETE'])
@@ -63,12 +59,11 @@ def city_delete(city_id):
     """
     Delete a city object
     """
-
     city = storage.get(City, city_id)
     if (city):
         storage.delete(city)
         storage.save()
-        return make_response(jsonify({}), 200)
+        return {}, 200
     else:
         abort(404)
 
@@ -81,14 +76,16 @@ def city_create(state_id):
     state = storage.get(State, state_id)
     if (state):
         data = request.get_json()
-        if not (data.get('name')):
-            return make_response(jsonify({'error': 'Missing name'}), 400)
         if (request.headers.get('Content-Type') == 'application/json'):
-            data['state_id'] = state_id
-            new_city = City(**data)
-            new_city.save()
-            from_db = storage.get(City, new_city.id)
-            return make_response(jsonify(from_db.to_dict()), 201)
+            if 'name' not in data:
+                return make_response(jsonify({'error': 'Missing name'}), 400)
+            else:
+                city = City()
+                city.state_id = state.id
+                for key, value in data.items():
+                    setattr(city, key, value)
+                city.save()
+                return city.to_dict(), 201
         else:
             return make_response(jsonify({'error': 'Not a JSON'}), 400)
     abort(404)

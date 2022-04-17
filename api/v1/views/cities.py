@@ -32,16 +32,13 @@ def find_city(city_id):
 @app_views.route('/cities/<city_id>', methods=['DELETE'])
 def delete_city(city_id):
     """This function will delete a city based on its ID"""
-    city_list = []
-    for city in storage.all(City).values():
-        city_list.append(city.id)
-        if city.id == city_id:
-            storage.delete(city)
-            storage.save()
-            return {}, 200
-    if city_id not in city_list:
+    city = storage.get(City, city_id)
+    if (city):
+        city.delete()
+        storage.save()
+        return {}, 200
+    else:
         abort(404)
-
 
 @app_views.route('/states/<state_id>/cities', methods=['POST'])
 def create_city(state_id):

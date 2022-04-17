@@ -10,18 +10,14 @@ from models.state import State
 @app_views.route('/states/<state_id>/cities', methods=['GET'])
 def find_cities(state_id):
     """This function will find the cities id from states"""
-    city_list = []
-    states_id = []
-    for city in storage.all(City).values():
-        if state_id == city.state_id:
-            city_list.append(city.to_dict())
-        else:
-            continue
-    for state in storage.all(State).values():
-        states_id.append(state.id)
-    if state_id not in states_id:
-        abort(404)
-    return jsonify(city_list)
+    state = storage.get(State, state_id)
+    if (state):
+        new_list = []
+        cities = state.cities
+        for city in cities:
+            new_list.append(city.to_dict())
+        return jsonify(new_list)
+    abort(404)
 
 
 @app_views.route('/cities/<city_id>', methods=['GET'])

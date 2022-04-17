@@ -50,7 +50,7 @@ def state_update(city_id):
             city_dict = city.to_dict()
             for k, v in data.items():
                 if (k != 'id' and k != 'created_at' and
-                    k != 'updated_at', k != 'state_id'):
+                        k != 'updated_at' and k != 'state_id'):
                     city_dict[k] = v
             city.delete()
             updated_city = City(**city_dict)

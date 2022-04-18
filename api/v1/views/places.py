@@ -125,12 +125,12 @@ def place_search():
                 places = (find_placess(city_id)).json
                 for place in places:
                     ret_json.append(place)
-        """if (data.get('cities') and not data.get('states')):
+        if (data.get('cities') and not data.get('states')):
             city_id = data.get('cities')
             for ct_id in city_id:
                 places = (find_placess(ct_id)).json
                 for place in places:
-                    ret_json.append(place)"""
+                    ret_json.append(place)
         if (data.get('cities') and data.get('states')):
             state_ids = data.get('states')
             city_id = data.get('cities')

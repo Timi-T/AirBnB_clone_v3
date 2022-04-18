@@ -13,7 +13,7 @@ def get_hash(pwd):
     """This function will has password"""
     password = hashlib.md5()
     password.update(pwd.encode('utf-8'))
-    result = password.digest()
+    result = password.hexdigest()
     return result
 
 

@@ -27,7 +27,7 @@ def place_amenities_get(place_id):
 
 
 @app_views.route('/places/<place_id>/amenities/<amenity_id>',
-                          strict_slashes=False)
+                 strict_slashes=False)
 def amenity_get(place_id, amenity_id):
     """
     Get a amenity using its id
@@ -45,7 +45,7 @@ def amenity_get(place_id, amenity_id):
 
 
 @app_views.route('/places/<place_id>/amenities/<amenity_id>',
-                          strict_slashes=False, methods=['DELETE'])
+                 strict_slashes=False, methods=['DELETE'])
 def amenity_delete(place_id, amenity_id):
     """
     Delete a amenity object linked to a place
@@ -70,7 +70,7 @@ def amenity_delete(place_id, amenity_id):
 
 
 @app_views.route('/places/<place_id>/amenities/<amenity_id>',
-                          strict_slashes=False, methods=['POST'])
+                 strict_slashes=False, methods=['POST'])
 def amenity_create(place_id, amenity_id):
     """
     Create a new amenity object

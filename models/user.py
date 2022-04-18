@@ -11,7 +11,8 @@ from sqlalchemy.orm import relationship
 
 def get_hash(pwd):
     """This function will has password"""
-    password = hashlib.md5(pwd.encode())
+    password = hashlib.md5()
+    password.update(pwd.encode('utf-8'))
     result = password.hexdigest()
     return result
 
@@ -35,4 +36,3 @@ class User(BaseModel, Base):
     def __init__(self, *args, **kwargs):
         """initializes user"""
         super().__init__(*args, **kwargs)
-        self.password = hashlib.md5(self.password.encode()).hexdigest()

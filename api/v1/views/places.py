@@ -146,7 +146,7 @@ def place_search():
                 places = (find_placess(ct_id)).json
                 for place in places:
                     ret_json.append(place)
-        if (data.get('amenities')):
+        """if (data.get('amenities')):
             req_amen = data.get('amenities')
             all_places = []
             for place in ret_json:
@@ -163,6 +163,6 @@ def place_search():
                         all_places.pop(i)
                         break
                 i += 1
-            ret_json = all_places
+            ret_json = all_places"""
         return jsonify(ret_json)
     return make_response(jsonify({'error': 'Not a JSON'}), 400)

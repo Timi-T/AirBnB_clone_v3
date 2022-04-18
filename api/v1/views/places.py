@@ -42,7 +42,7 @@ def delete_place(place_id):
     """This function will delete a place based on its ID"""
     place_list = []
     for place in storage.all(Place).values():
-        place_list.append(place)
+        place_list.append(place.id)
         if place.id == place_id:
             storage.delete(place)
             storage.save()

@@ -41,7 +41,7 @@ def delete_city(city_id):
     """This function will delete a city based on its ID"""
     city_list = []
     for city in storage.all(City).values():
-        city_list.append(city)
+        city_list.append(city.id)
         if city.id == city_id:
             storage.delete(city)
             storage.save()

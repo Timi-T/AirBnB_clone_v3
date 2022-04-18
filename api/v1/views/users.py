@@ -41,7 +41,7 @@ def delete_user(user_id):
         abort(404)
 
 
-@app_views.route('/users', methods=['POST'])
+@app_views.route('/users/', methods=['POST'])
 def create_user():
     """This funtion will create a user"""
     content_type = request.headers.get('Content-Type')

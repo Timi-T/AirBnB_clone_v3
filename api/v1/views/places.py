@@ -111,8 +111,8 @@ def place_search():
         data = request.get_json()
         places = storage.all(Place)
         ret_json = []
-        if (not data or (data and (not data.get('states')
-                         and not data.get('cities')))):
+        if (not data or (data and (not data.get('states') and not
+                                   data.get('cities')))):
             for key, place in places.items():
                 ret_json.append(place.to_dict())
         if (data.get('states') and not data.get('cities')):

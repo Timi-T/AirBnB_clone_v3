@@ -2,6 +2,7 @@
 """This function will be application logic for Place"""
 from flask import request, jsonify, make_response, abort
 from api.v1.views import app_views
+from api.v1.views.cities import find_cities
 from models import storage
 from models.city import City
 from models.place import Place
@@ -97,3 +98,70 @@ def update_place(place_id):
             return make_response(jsonify({'error': 'Not a JSON'}), 400)
     else:
         abort(404)
+
+
+@app_views.route('/places_search', strict_slashes=False,
+                  methods=['POST'])
+def place_search():
+    """Filter places based on states, cities and amenities"""
+
+    if (request.headers.get('Content-Type') == 'application/json'):
+        data = request.get_json()
+        places = storage.all(Place)
+        ret_json = []
+        if (not data or (data and (not data.get('states') and
+                not data.get('cities')))):
+            for key, place in places.items():
+                ret_json.append(place.to_dict())
+        if (data.get('states') and not data.get('cities')):
+            state_ids = data.get('states')
+            city_list =[]
+            for st_id in state_ids:
+               state_cities = (find_cities(st_id)).json
+               for city in state_cities:
+                   city_list.append(city['id'])
+            for city_id in city_list:
+               places = (find_placess(city_id)).json
+               for place in places:
+                   ret_json.append(place)
+        if (data.get('cities') and not data.get('states')):
+            city_id = data.get('cities')
+            for ct_id in city_id:
+               places = (find_placess(ct_id)).json
+               for place in places:
+                   ret_json.append(place)
+        if (data.get('cities') and data.get('states')):
+            state_ids = data.get('states')
+            city_id = data.get('cities')
+            city_list =[]
+            for st_id in state_ids:
+               state_cities = (find_cities(st_id)).json
+               for city in state_cities:
+                   city_list.append(city['id'])
+            for ct_id in city_id:
+                   if (ct_id not in city_list):
+                       city_list.append(ct_id)
+            for ct_id in city_list:
+               places = (find_placess(ct_id)).json
+               for place in places:
+                   ret_json.append(place)
+        if (data.get('amenities')):
+            req_amen = data.get('amenities')
+            all_places = []
+            for place in ret_json:
+                all_places.append(place)
+            avail_amen = []
+            i = 0
+            for place in all_places:
+                place_obj = storage.get(Place, place['id'])
+                place_amenities = place_obj.amenities
+                for amenity in place_amenities:
+                    avail_amen.append(amenity.id)
+                for amen in req_amen:
+                    if (amen not in avail_amen):
+                        all_places.pop(i)
+                    break
+                i += 1
+            ret_json = all_places;
+        return jsonify(ret_json)
+    abort(400, "Not a JSON")

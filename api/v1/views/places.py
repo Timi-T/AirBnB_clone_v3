@@ -114,6 +114,10 @@ def place_search():
         if (not data):
             for key, place in places.items():
                 ret_json.append(place.to_dict())
+        if (not data.get('states') and not
+                data.get('cities') and data.get('amenities')):
+            for key, place in places.items():
+                ret_json.append(place.to_dict())
         if (data.get('states') and not data.get('cities')):
             state_ids = data.get('states')
             city_list = []
@@ -146,23 +150,23 @@ def place_search():
                 places = (find_placess(ct_id)).json
                 for place in places:
                     ret_json.append(place)
-        """if (data.get('amenities')):
+        if (data.get('amenities')):
             req_amen = data.get('amenities')
-            all_places = []
-            for place in ret_json:
-                all_places.append(place)
+            all_places = ret_json.copy()
             avail_amen = []
-            i = 0
+            ret_list = []
             for place in all_places:
+                not_found = 0
                 place_obj = storage.get(Place, place['id'])
                 place_amenities = place_obj.amenities
                 for amenity in place_amenities:
                     avail_amen.append(amenity.id)
                 for amen in req_amen:
                     if (amen not in avail_amen):
-                        all_places.pop(i)
+                        not_found += 1
                         break
-                i += 1
-            ret_json = all_places"""
+                if (not_found == 0):
+                    ret_list.append(place)
+            ret_json = ret_list
         return jsonify(ret_json)
     return make_response(jsonify({'error': 'Not a JSON'}), 400)

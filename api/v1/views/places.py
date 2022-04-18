@@ -152,10 +152,9 @@ def place_search():
                     ret_json.append(place)
         if (data.get('amenities')):
             req_amen = data.get('amenities')
-            all_places = ret_json.copy()
             avail_amen = []
             ret_list = []
-            for place in all_places:
+            for place in ret_json:
                 not_found = 0
                 place_obj = storage.get(Place, place['id'])
                 place_amenities = place_obj.amenities
@@ -167,6 +166,6 @@ def place_search():
                         break
                 if (not_found == 0):
                     ret_list.append(place)
-            ret_json = ret_list
+            return jsonify(ret_list)
         return jsonify(ret_json)
     return make_response(jsonify({'error': 'Not a JSON'}), 400)

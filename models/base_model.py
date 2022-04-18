@@ -63,7 +63,7 @@ class BaseModel:
         new_dict = self.__dict__.copy()
         if models.storage_t == "db":
             if 'password' in new_dict:
-                new_dict.pop('password', None)
+                del new_dict['password']
         if "created_at" in new_dict:
             new_dict["created_at"] = new_dict["created_at"].strftime(time)
         if "updated_at" in new_dict:

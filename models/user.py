@@ -11,8 +11,7 @@ from sqlalchemy.orm import relationship
 
 def get_hash(pwd):
     """This function will has password"""
-    password = hashlib.md5()
-    password.update(pwd.encode('utf-8'))
+    password = hashlib.md5(pwd.encode())
     result = password.hexdigest()
     return result
 

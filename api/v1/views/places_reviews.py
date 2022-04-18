@@ -24,6 +24,7 @@ def find_reviews(place_id):
     else:
         abort(404)
 
+
 @app_views.route('/reviews/<review_id>', strict_slashes=False,
                  methods=['GET'])
 def find_review(review_id):

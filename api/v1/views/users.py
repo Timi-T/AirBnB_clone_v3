@@ -53,9 +53,10 @@ def create_user():
             return make_response(jsonify({'error': 'Missing password'}), 400)
         user = User(**json)
         user.save()
-        return user.to_dict(), 201
+        return (storage.get(User, user.id)).to_dict(), 201
     else:
         return make_response(jsonify({'error': 'Not a JSON'}), 400)
+
 
 @app_views.route('/users/<user_id>', methods=['PUT'])
 def update_user(user_id):

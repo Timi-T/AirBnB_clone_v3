@@ -114,7 +114,7 @@ def place_search():
         if (not data):
             for key, place in places.items():
                 ret_json.append(place.to_dict())
-        if (data.get('states') and not data.get('cities')):
+        """if (data.get('states') and not data.get('cities')):
             state_ids = data.get('states')
             city_list = []
             for st_id in state_ids:
@@ -124,7 +124,7 @@ def place_search():
             for city_id in city_list:
                 places = (find_placess(city_id)).json
                 for place in places:
-                    ret_json.append(place)
+                    ret_json.append(place)"""
         if (data.get('cities') and not data.get('states')):
             city_id = data.get('cities')
             for ct_id in city_id:
@@ -146,7 +146,7 @@ def place_search():
                 places = (find_placess(ct_id)).json
                 for place in places:
                     ret_json.append(place)
-        """if (data.get('amenities')):
+        if (data.get('amenities')):
             req_amen = data.get('amenities')
             all_places = []
             for place in ret_json:
@@ -163,6 +163,6 @@ def place_search():
                         all_places.pop(i)
                         break
                 i += 1
-            ret_json = all_places"""
+            ret_json = all_places
         return jsonify(ret_json)
     return make_response(jsonify({'error': 'Not a JSON'}), 400)

@@ -41,28 +41,21 @@ def delete_user(user_id):
         abort(404)
 
 
-@app_views.route('/users/', methods=['POST'])
+@app_views.route('/users', methods=['POST'])
 def create_user():
     """This funtion will create a user"""
     content_type = request.headers.get('Content-Type')
     if (content_type == 'application/json'):
         json = request.get_json()
-        user = User()
-        if 'email' in json:
-            user.email = json['email']
-        else:
+        if 'email' not in json:
             return make_response(jsonify({'error': 'Missing email'}), 400)
-        if 'password' in json:
-            user.password = json['password']
-        else:
+        if 'password' not in json:
             return make_response(jsonify({'error': 'Missing password'}), 400)
-        for key, value in json.items():
-            setattr(user, key, value)
+        user = User(**json)
         user.save()
         return user.to_dict(), 201
     else:
         return make_response(jsonify({'error': 'Not a JSON'}), 400)
-
 
 @app_views.route('/users/<user_id>', methods=['PUT'])
 def update_user(user_id):

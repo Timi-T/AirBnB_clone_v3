@@ -47,13 +47,19 @@ def create_user():
     content_type = request.headers.get('Content-Type')
     if (content_type == 'application/json'):
         json = request.get_json()
-        if 'email' not in json:
+        user = User()
+        if 'email' in json:
+            user.email = json['email']
+        else:
             return make_response(jsonify({'error': 'Missing email'}), 400)
-        if 'password' not in json:
+        if 'password' in json:
+            user.password = json['password']
+        else:
             return make_response(jsonify({'error': 'Missing password'}), 400)
-        user = User(**json)
+        for key, value in json.items():
+            setattr(user, key, value)
         user.save()
-        return (storage.get(User, user.id)).to_dict(), 201
+        return user.to_dict(), 201
     else:
         return make_response(jsonify({'error': 'Not a JSON'}), 400)
 

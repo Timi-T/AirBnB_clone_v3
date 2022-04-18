@@ -23,7 +23,7 @@ def place_amenities_get(place_id):
         for amenity in amenities:
             new_list.append(amenity.to_dict())
         return jsonify(new_list)
-    abort(400)
+    abort(404)
 
 
 @app_views.route('/places/<place_id>/amenities/<amenity_id>',
@@ -87,4 +87,3 @@ def amenity_create(place_id, amenity_id):
         storage.save()
         return make_response(jsonify(amenity.to_dict()), 201)
     abort(404)
-

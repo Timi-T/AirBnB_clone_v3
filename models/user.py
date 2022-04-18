@@ -36,4 +36,4 @@ class User(BaseModel, Base):
     def __init__(self, *args, **kwargs):
         """initializes user"""
         super().__init__(*args, **kwargs)
-        self.password = str(get_hash(self.password))
+        self.password = get_hash(self.password)

@@ -1,11 +1,20 @@
 #!/usr/bin/python3
 """ holds class User"""
+import hashlib
 import models
 from models.base_model import BaseModel, Base
 from os import getenv
 import sqlalchemy
 from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
+
+
+def get_hash(pwd):
+    """This function will has password"""
+    password = hashlib.md5()
+    password.update(pwd.encode('utf-8'))
+    result = password.digest()
+    return result
 
 
 class User(BaseModel, Base):
@@ -16,10 +25,8 @@ class User(BaseModel, Base):
         password = Column(String(128), nullable=False)
         first_name = Column(String(128), nullable=True)
         last_name = Column(String(128), nullable=True)
-        places = relationship("Place", backref="user",
-                              cascade="all, delete-orphan")
-        reviews = relationship("Review", backref="user",
-                               cascade="all, delete-orphan")
+        places = relationship("Place", backref="user", cascade="all, delete")
+        reviews = relationship("Review", backref="user", cascade="all, delete")
     else:
         email = ""
         password = ""
@@ -29,3 +36,4 @@ class User(BaseModel, Base):
     def __init__(self, *args, **kwargs):
         """initializes user"""
         super().__init__(*args, **kwargs)
+        self.password = str(get_hash(self.password))

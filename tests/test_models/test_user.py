@@ -9,6 +9,7 @@ import models
 from models import user
 from models.base_model import BaseModel
 import pep8
+import pycodestyle
 import unittest
 User = user.User
 
@@ -81,9 +82,9 @@ class TestUser(unittest.TestCase):
         user = User()
         self.assertTrue(hasattr(user, "password"))
         if models.storage_t == 'db':
-            self.assertEqual(user.password, None)
+            self.assertEqual(type(user.password), str)
         else:
-            self.assertEqual(user.password, "")
+            self.assertEqual(type(user.password), str)
 
     def test_first_name_attr(self):
         """Test that User has attr first_name, and it's an empty string"""
@@ -110,7 +111,7 @@ class TestUser(unittest.TestCase):
         self.assertEqual(type(new_d), dict)
         self.assertFalse("_sa_instance_state" in new_d)
         for attr in u.__dict__:
-            if attr is not "_sa_instance_state":
+            if attr != "_sa_instance_state":
                 self.assertTrue(attr in new_d)
         self.assertTrue("__class__" in new_d)
 

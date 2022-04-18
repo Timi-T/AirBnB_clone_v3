@@ -70,7 +70,9 @@ def create_review(place_id):
             if 'text' not in json:
                 return make_response(jsonify({'error': 'Missing text'}), 400)
             review = Review()
-            review.place_id = json['place_id']
+            review.place_id = place.id
+            for key, value in json.items():
+                setattr(review, key, value)
             review.save()
             return review.to_dict(), 201
         else:

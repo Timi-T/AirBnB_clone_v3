@@ -62,7 +62,8 @@ def create_city(state_id):
             if 'name' in json:
                 city = City()
                 city.state_id = state_id
-                city.name = json['name']
+                for key, value in json.items():
+                    setattr(city, key, value)
                 city.save()
                 return city.to_dict(), 201
             else:

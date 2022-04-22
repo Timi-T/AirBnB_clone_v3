@@ -152,9 +152,9 @@ def place_search():
                     ret_json.append(place)
         if (data.get('amenities')):
             req_amen = data.get('amenities')
-            avail_amen = []
             ret_list = []
             for place in ret_json:
+                avail_amen = []
                 not_found = 0
                 place_obj = storage.get(Place, place['id'])
                 place_amenities = place_obj.amenities
